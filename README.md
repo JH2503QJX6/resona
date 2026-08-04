@@ -78,8 +78,9 @@ the flow works end to end, but the risk value is a labelled placeholder.
 
 ### Running the real model
 
-To get actual predictions, start the bundled inference service. It needs
-**Python 3.9–3.13** (PyTorch 2.7 has no wheels for 3.14 yet).
+To get actual predictions, start the bundled inference service. Any **Python
+3.9 or newer** works — dependencies are floored, not pinned, so pip picks a
+build that matches your interpreter.
 
 ```bash
 npm run model:setup    # one-off: venv + PyTorch, librosa, FastAPI (~2 GB)

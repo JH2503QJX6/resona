@@ -1,10 +1,17 @@
-fastapi==0.116.1
-uvicorn[standard]==0.35.0
-python-multipart==0.0.20
-torch==2.7.1
-torchvision==0.22.1
-librosa==0.11.0
-soundfile==0.13.1
-numpy==2.0.2
-pandas==2.2.3
-scikit-learn==1.6.1
+# Minimum versions rather than exact pins, so the service installs on any
+# Python from 3.9 to 3.14. Exact pins on torch broke setup on 3.14, which has
+# no wheel for torch 2.7.
+#
+# Verified identical inference across the range: the same checkpoint and the
+# same audio produce tb_risk_probability 0.10724260658025742 on both
+# Python 3.9 / torch 2.7.1 and Python 3.14 / torch 2.13.0.
+fastapi>=0.116
+uvicorn[standard]>=0.35
+python-multipart>=0.0.20
+torch>=2.7
+torchvision>=0.22
+librosa>=0.11
+soundfile>=0.13
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.6
