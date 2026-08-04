@@ -60,6 +60,26 @@ export default function TransparencyPage() {
           </section>
 
           <section>
+            <h2>Screening location is a model input</h2>
+            <p>
+              The model was trained on recordings from seven clinics — India,
+              Madagascar, the Philippines, South Africa, Tanzania, Uganda, and
+              Vietnam — and it uses the site as a base-rate prior. TB prevalence
+              across those sites ranged from 9.6% to 47.8% in the training data,
+              and the site&rsquo;s effect on the score tracks that prevalence
+              closely.
+            </p>
+            <p>
+              In practice this means two people with identical recordings and
+              identical symptoms can receive different scores because they
+              selected different locations. That is a real property of the model,
+              not a display quirk. Screening anywhere outside those seven sites
+              leaves the input unmodelled — the result is not a neutral midpoint,
+              it is simply less informed, and the interface says so on the result.
+            </p>
+          </section>
+
+          <section>
             <h2>Where the numbers come from</h2>
             <ul>
               {TB_FIGURES.map((figure) => (

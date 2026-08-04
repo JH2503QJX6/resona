@@ -5,6 +5,7 @@ import {
   HIV_STATUSES,
   SYMPTOMS,
   TB_HISTORY,
+  isModelledSite,
   type ClinicalIntake,
   type HivStatus,
   type TbHistory,
@@ -75,16 +76,17 @@ export function ClinicalForm({ value, onChange, disabled }: ClinicalFormProps) {
       <div className="intake__grid">
         <div>
           <label className="field-label" htmlFor="intake-country">
-            Country
+            Screening location
           </label>
           <select
             id="intake-country"
             className="input"
             disabled={disabled}
             value={value.country}
+            aria-describedby="intake-country-hint"
             onChange={(event) => set("country", event.target.value)}
           >
-            <option value="">Not listed</option>
+            <option value="">Somewhere else</option>
             {COUNTRIES.map((country) => (
               <option key={country.code} value={country.code}>
                 {country.label}
@@ -131,6 +133,12 @@ export function ClinicalForm({ value, onChange, disabled }: ClinicalFormProps) {
           </select>
         </div>
       </div>
+
+      <p className="note" id="intake-country-hint">
+        {isModelledSite(value.country)
+          ? "The model was trained at seven clinics and uses the site as a base-rate prior, so this choice moves the score noticeably."
+          : "The model was trained at seven clinics only. Screening anywhere else leaves that input unmodelled, and the score is correspondingly less reliable."}
+      </p>
 
       <fieldset className="intake__symptoms" disabled={disabled}>
         <legend className="field-label">Symptoms</legend>

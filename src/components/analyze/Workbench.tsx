@@ -11,7 +11,12 @@ import { ClinicalForm } from "@/components/analyze/ClinicalForm";
 import { ResultPanel } from "@/components/analyze/ResultPanel";
 import { ReferralPrompt } from "@/components/referral/ReferralPrompt";
 import { extractAudioVisualization } from "@/lib/audio-features";
-import { EMPTY_INTAKE, toModelMetadata, type ClinicalIntake } from "@/lib/clinical";
+import {
+  EMPTY_INTAKE,
+  isModelledSite,
+  toModelMetadata,
+  type ClinicalIntake,
+} from "@/lib/clinical";
 import type { RiskLevel } from "@/lib/types";
 
 const DEMO_LABEL: Record<RiskLevel, string> = {
@@ -264,6 +269,7 @@ export function Workbench() {
       {flow.stage === "detail" && (
         <ResultPanel
           result={result}
+          siteModelled={isModelledSite(intake.country)}
           onClose={result?.risk === "high" ? flow.backToPrompt : flow.close}
         />
       )}

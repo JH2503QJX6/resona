@@ -5,6 +5,19 @@ import type { BiologicalSex } from "./types";
  * fall back to the training mean inside the backend, so they are genuinely
  * optional — but the more that is filled in, the more the score means. */
 
+/**
+ * The seven CODA-TB collection sites — not a general country list.
+ *
+ * This feature encodes the site a recording came from, and the model uses it as
+ * a base-rate prior: TB prevalence across the training split ranged from 9.6%
+ * (Philippines) to 47.8% (Madagascar), and the site's effect on the score
+ * tracks that prevalence closely (Spearman rho = 0.89). Any location outside
+ * these seven leaves all site features at zero, which is not a neutral
+ * midpoint — it is simply unmodelled.
+ *
+ * Note: `SA` is the dataset's own code for South Africa. It is not the ISO
+ * code (which is `ZA`), so it must be sent exactly as written here.
+ */
 export const COUNTRIES = [
   { code: "IN", label: "India" },
   { code: "MG", label: "Madagascar" },
@@ -14,6 +27,13 @@ export const COUNTRIES = [
   { code: "UG", label: "Uganda" },
   { code: "VN", label: "Vietnam" },
 ] as const;
+
+export const MODELLED_SITE_CODES: readonly string[] = COUNTRIES.map((c) => c.code);
+
+/** True when the chosen location is one the model was actually trained on. */
+export function isModelledSite(country: string): boolean {
+  return MODELLED_SITE_CODES.includes(country);
+}
 
 export const HIV_STATUSES = ["Unknown", "Negative", "Positive"] as const;
 export type HivStatus = (typeof HIV_STATUSES)[number];

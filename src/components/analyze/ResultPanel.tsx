@@ -5,10 +5,12 @@ import type { AnalysisResult } from "@/lib/types";
 
 interface ResultPanelProps {
   result: AnalysisResult | null;
+  /** False when the screening location is outside the seven trained sites. */
+  siteModelled: boolean;
   onClose: () => void;
 }
 
-export function ResultPanel({ result, onClose }: ResultPanelProps) {
+export function ResultPanel({ result, siteModelled, onClose }: ResultPanelProps) {
   const detail = result?.detail;
   const isDemo = result?.source === "mock";
 
@@ -33,6 +35,15 @@ export function ResultPanel({ result, onClose }: ResultPanelProps) {
           ? "The risk value is a placeholder. The spectrogram below is computed from the audio you actually recorded or uploaded."
           : "The prediction comes from the model backend. The spectrogram shows the frequency character of the audio that was sent."}
       </p>
+
+      {!isDemo && !siteModelled ? (
+        <p className="alert" style={{ marginTop: "var(--space-md)" }}>
+          <strong>Outside the trained sites.</strong> The model learned a
+          per-clinic base rate from seven collection sites, and your screening
+          location is not one of them. That input is unmodelled here, so treat
+          this score as weaker evidence than it would be at one of those sites.
+        </p>
+      ) : null}
 
       {detail ? (
         <div className="stack" style={{ marginTop: "var(--space-lg)" }}>
