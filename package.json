@@ -1,0 +1,34 @@
+{
+  "name": "resona",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Acoustic pre-screening for tuberculosis — record a cough, see the signal, understand the next step.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "model:setup": "cd deploy/model-space && python3 -m venv .venv && .venv/bin/python3 -m pip install -r requirements.txt",
+    "model:check": "cd deploy/model-space && .venv/bin/python3 test_model_load.py",
+    "model:dev": "cd deploy/model-space && .venv/bin/python3 -m uvicorn app:app --host 127.0.0.1 --port 7860"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "firebase": "^12.16.0",
+    "next": "16.2.10",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

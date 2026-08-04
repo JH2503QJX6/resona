@@ -1,0 +1,220 @@
+<div align="center">
+
+# Resona
+
+**Screening that listens.**
+
+Tuberculosis changes how a cough sounds long before most people reach a clinic.
+Resona records that cough in the browser, turns it into a readable frequency
+signal, and shows you what to do next.
+
+[Getting started](#getting-started) · [How it works](#how-it-works) · [Configuration](#configuration) · [Deployment](#deployment)
+
+</div>
+
+---
+
+> [!IMPORTANT]
+> Resona is an open research prototype, not a medical device. It does not
+> diagnose tuberculosis and it cannot rule it in or out. For symptoms or health
+> concerns, consult a qualified clinician.
+
+## What it does
+
+|                      |                                                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Record anywhere**  | Any phone or laptop microphone. No app install, no clinical hardware.                                       |
+| **Show the signal**  | Audio is decoded, windowed, and rendered as a 24-band × 32-frame spectrogram — you see what the model sees. |
+| **State the limits** | Every number ships with its definition. Demo output is labelled as demo.                                    |
+| **Route to care**    | A high signal leads to a referral flow, not to a scary number on its own.                                   |
+
+## How it works
+
+```
+ Browser                          Next.js server              Model service
+┌──────────────────────┐        ┌──────────────────┐        ┌──────────────────┐
+│ MediaRecorder        │        │                  │        │  FastAPI         │
+│   ↓                  │        │  /api/analyze    │        │  + PyTorch CNN   │
+│ decodeAudioData      │──────▶ │    ├─ validate   │──────▶ │    /predict      │
+│   ↓ downmix to mono  │  WAV   │    ├─ forward    │        │                  │
+│   ↓ STFT (24×32)     │        │    └─ or demo    │ ◀──────│  risk band +     │
+│   ↓ 16-bit WAV       │        │                  │        │  probability     │
+└──────────────────────┘        └──────────────────┘        └──────────────────┘
+```
+
+**Cough segmentation matters.** The model was trained on individually segmented
+coughs and crops every clip to its first **0.55 s**, so handing it one long
+recording would show it half a second of silence. The browser therefore runs
+energy-based onset detection over the recording, cuts out each cough (with a
+250 ms refractory gap so one cough yields one clip), and uploads them as
+separate parts. `accepted_clips` in the response tells you how many survived the
+backend's own quality checks.
+
+**Clinical metadata matters too.** The model fuses an acoustic branch with a
+27-feature clinical branch. Blank numeric fields fall back to training means
+inside the service, so the intake form is optional — but the more of it is
+filled in, the more the score is worth.
+
+The spectrogram is computed **client-side** from the exact audio the browser
+sends, so the visualisation is always faithful to the input — even when the
+model backend is absent and the risk value is a placeholder.
+
+**Demo mode.** With no `BACKEND_API_URL` configured, `/api/analyze` returns a
+deterministic placeholder derived from file size. The UI labels it clearly and
+the assistant is instructed to say so. No audio is analysed for TB patterns in
+that state.
+
+## Getting started
+
+```bash
+git clone https://github.com/dtcmunyie/resona.git
+cd resona
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). This runs in **demo mode** —
+the flow works end to end, but the risk value is a labelled placeholder.
+
+### Running the real model
+
+To get actual predictions, start the bundled inference service. It needs
+**Python 3.9–3.13** (PyTorch 2.7 has no wheels for 3.14 yet).
+
+```bash
+npm run model:setup    # one-off: venv + PyTorch, librosa, FastAPI (~2 GB)
+npm run model:check    # verifies the checkpoint loads and scores
+npm run model:dev      # serves on http://127.0.0.1:7860
+```
+
+Then point the app at it and restart `npm run dev`:
+
+```bash
+echo 'BACKEND_API_URL=http://127.0.0.1:7860' >> .env.local
+```
+
+The result badge switches from **Demo mode** to a real risk band, and the detail
+panel shows the model name, version, and inference time.
+
+### Scripts
+
+| Command               | Does                                             |
+| --------------------- | ------------------------------------------------ |
+| `npm run dev`         | Dev server with hot reload                       |
+| `npm run build`       | Production build (standalone output)             |
+| `npm start`           | Serve the production build                       |
+| `npm run lint`        | ESLint                                           |
+| `npm run typecheck`   | `tsc --noEmit`                                   |
+| `npm run model:setup` | Create the Python venv for the inference service |
+| `npm run model:check` | Smoke-test that the checkpoint loads             |
+| `npm run model:dev`   | Run the inference service on port 7860           |
+
+## Configuration
+
+All variables are optional. Each unset feature degrades to a clearly labelled
+state rather than an error.
+
+Create `.env.local`:
+
+```env
+# Model backend. Unset → /api/analyze returns labelled demo output.
+BACKEND_API_URL=https://your-model-service.example.com
+
+# OpenAI-compatible chat provider for the result assistant.
+# Unset → the assistant returns "not configured".
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+
+# Firebase email/password auth for the referral flow.
+# Unset → sign-in falls back to a browser-local sandbox account.
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+```
+
+## Design system
+
+Resona ships one stylesheet and no UI framework.
+
+- **Colour** — every token is declared once with CSS `light-dark()`. The theme
+  toggle flips `color-scheme` on `<html>`; nothing else has to know about themes.
+- **Type** — Geist and Geist Mono, self-hosted through `next/font`. Two families,
+  a fluid `clamp()` scale, no other webfonts.
+- **Motion** — one animated element on the marketing page. Everything collapses
+  under `prefers-reduced-motion`.
+- **No runtime CSS-in-JS, no icon library, no animation library.**
+
+## Architecture
+
+```
+src/
+├── app/
+│   ├── page.tsx              Landing
+│   ├── analyze/              Recorder + result flow
+│   ├── referrals/            Sandbox referral directory (auth-gated)
+│   ├── login/                Sign in
+│   ├── transparency/         Limits, data sources, licences
+│   ├── api/analyze/          Model proxy, or labelled demo output
+│   ├── api/chat/             Assistant proxy (key stays server-side)
+│   └── globals.css           The design system
+├── components/
+│   ├── layout/               Header, Footer, Backdrop, ThemeToggle
+│   ├── landing/              Marketing sections
+│   ├── analyze/              Workbench, Scope, ResultPanel, Meter
+│   ├── chat/  auth/  referral/
+├── hooks/                    Recorder, analysis, result flow, auth, chat
+├── lib/                      Audio DSP, API client, types, theme, WHO data
+├── models/                   Domain types
+└── services/                 Auth, referral, assistant
+deploy/model-space/           FastAPI + PyTorch inference service
+```
+
+## Deployment
+
+**Frontend** — any Node host. The build emits Next.js standalone output.
+
+```bash
+docker build -t resona .
+docker run -p 7860:7860 -e BACKEND_API_URL=https://your-model-service resona
+```
+
+**Model service** — see [`deploy/model-space`](deploy/model-space).
+
+```bash
+cd deploy/model-space
+pip install -r requirements.txt
+python export_deployment_config.py
+uvicorn app:app --host 0.0.0.0 --port 7860
+```
+
+`POST /predict` takes an `audio` file plus a `metadata` JSON string and returns
+`tb_risk_probability`, `risk_band`, and `accepted_clips`.
+
+## Data and sources
+
+> [!NOTE]
+> The CODA-TB participant records are **not included in this repository**. They
+> are distributed through Synapse (`syn40358494`) under a data use agreement
+> that does not permit redistribution. To work with them locally, accept the
+> terms on Synapse and run `deploy/model-space/download_coda_solicited.py` with
+> your own auth token — it writes the two CSVs into `deploy/`.
+
+Landing-page statistics come from the **WHO Global Tuberculosis Report 2024**.
+Incidence estimates and notified cases measure different things, so each figure
+carries its year and definition in the UI. Model training uses the public
+**CODA-TB** dataset.
+
+The referral directory is **fictional sandbox data** styled after SatuSehat. It
+is not connected to the real SatuSehat API and creates no real appointment.
+Production integration would require registration at the
+[SatuSehat Developer Portal](https://satusehat.kemkes.go.id/), OAuth2 client
+credentials, and FHIR R4 endpoints for Practitioner, Organization, and Encounter.
+
+## Validation status
+
+No accuracy, sensitivity, or specificity figure is claimed. Dataset validation,
+calibration, and clinical evaluation must be completed and published before any
+score in this interface can be read as performance. The UI is written to hold
+that line, and so is the assistant's system prompt.

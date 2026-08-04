@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.*
+npm-debug.log*
+Dockerfile
+.dockerignore
+.superpowers
+docs
+threads
+logs
+terrain-model
+test
+*.log
+**/.venv

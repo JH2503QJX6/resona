@@ -1,0 +1,109 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+# testing
+/coverage
+
+# local visual brainstorming artifacts
+/.superpowers/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+/data
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env
+.env.local
+
+# vercel
+.vercel
+/threads
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+.venv/
+venv/
+ENV/
+*.ipynb_checkpoints
+.ipynb_checkpoints/
+*.h5
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.tflite
+*.log
+dist/
+build/
+terrain-model/data/
+terrain-model/input/
+terrain-model/output/
+terrain-model/models/
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# agent-only workspace files
+/.hallmark/
+/.agents/
+/.superpowers/
+/docs/superpowers/
+/logs/
+AGENTS.md
+agents.md
+IDEA.md
+idea.md
+design.md
+*.AGENTS.md
+
+# original model handoff workspace; deployment copy lives in deploy/model-space
+/integrate-models/
+/integrate-model/
+/main-model-experiments/
+terrain-model/
+
+# deployment needs the copied PyTorch weights despite the global *.pt rule
+!/deploy/model-space/*.pt
+deploy/model-space/AGENT_HANDOFF_NEXTJS_HF.md
+
+# Python virtual environments (model service)
+**/.venv/
+
+# CODA-TB participant records — redistribution is restricted by the Synapse
+# data use agreement. Re-download with deploy/model-space/download_coda_solicited.py
+# using your own Synapse auth token.
+/deploy/*.csv
+
+# Private design references — layout studies only, never shipped by the app
+/assets/
