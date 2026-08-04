@@ -244,3 +244,30 @@ No accuracy, sensitivity, or specificity figure is claimed. Dataset validation,
 calibration, and clinical evaluation must be completed and published before any
 score in this interface can be read as performance. The UI is written to hold
 that line, and so is the assistant's system prompt.
+
+## Team
+
+Jonathan Allen Hung · David Lyon Sudirman · Utkarsh Sandilya
+
+## Credits
+
+| | License | Source |
+|---|---|---|
+| [Next.js](https://nextjs.org/) 16 | MIT | Vercel |
+| [React](https://react.dev/) 19 | MIT | Meta |
+| [Tailwind CSS](https://tailwindcss.com/) 4 | MIT | Tailwind Labs |
+| [Firebase](https://firebase.google.com/) | Apache-2.0 | Google |
+| [clsx](https://github.com/lukeed/clsx) · [tailwind-merge](https://github.com/dcastil/tailwind-merge) | MIT | Luke Edwards · Dany Castillo |
+| [Geist / Geist Mono](https://vercel.com/font) | OFL-1.1 | Vercel |
+| [PyTorch](https://pytorch.org/) | BSD-3-Clause | Meta AI |
+| [FastAPI](https://fastapi.tiangolo.com/) | MIT | Sebastián Ramírez |
+| [librosa](https://librosa.org/) | ISC | librosa contributors |
+
+Asset provenance is tracked in [`docs/assets.md`](docs/assets.md).
+
+## License
+
+[MIT](LICENSE). The licence covers the source code in this repository. It does
+not cover the CODA-TB dataset, which is distributed separately under its own
+data use agreement and is not redistributed here, nor individual assets that
+carry their own terms — see [`docs/assets.md`](docs/assets.md).
