@@ -6,10 +6,9 @@ import type { AnalysisResult } from "@/lib/types";
 interface ResultPanelProps {
   result: AnalysisResult | null;
   onClose: () => void;
-  onAskAi: () => void;
 }
 
-export function ResultPanel({ result, onClose, onAskAi }: ResultPanelProps) {
+export function ResultPanel({ result, onClose }: ResultPanelProps) {
   const detail = result?.detail;
   const isDemo = result?.source === "mock";
 
@@ -72,9 +71,6 @@ export function ResultPanel({ result, onClose, onAskAi }: ResultPanelProps) {
       <div className="aside-panel__foot">
         <button type="button" className="btn btn--ghost" onClick={onClose}>
           Back
-        </button>
-        <button type="button" className="btn btn--primary" onClick={onAskAi}>
-          Ask the assistant
         </button>
       </div>
     </section>

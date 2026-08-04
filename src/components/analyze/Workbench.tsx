@@ -10,7 +10,6 @@ import { Meter } from "@/components/analyze/Meter";
 import { ClinicalForm } from "@/components/analyze/ClinicalForm";
 import { ResultPanel } from "@/components/analyze/ResultPanel";
 import { ReferralPrompt } from "@/components/referral/ReferralPrompt";
-import { Assistant } from "@/components/chat/Assistant";
 import { extractAudioVisualization } from "@/lib/audio-features";
 import { EMPTY_INTAKE, toModelMetadata, type ClinicalIntake } from "@/lib/clinical";
 import type { RiskLevel } from "@/lib/types";
@@ -266,11 +265,8 @@ export function Workbench() {
         <ResultPanel
           result={result}
           onClose={result?.risk === "high" ? flow.backToPrompt : flow.close}
-          onAskAi={flow.showChat}
         />
       )}
-
-      {flow.stage === "chat" && <Assistant result={result} onClose={flow.showDetail} />}
     </div>
   );
 }

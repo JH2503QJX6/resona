@@ -60,9 +60,8 @@ sends, so the visualisation is always faithful to the input — even when the
 model backend is absent and the risk value is a placeholder.
 
 **Demo mode.** With no `BACKEND_API_URL` configured, `/api/analyze` returns a
-deterministic placeholder derived from file size. The UI labels it clearly and
-the assistant is instructed to say so. No audio is analysed for TB patterns in
-that state.
+deterministic placeholder derived from file size. The UI labels it clearly, and
+no audio is analysed for TB patterns in that state.
 
 ## Getting started
 
@@ -121,12 +120,6 @@ Create `.env.local`:
 # Model backend. Unset → /api/analyze returns labelled demo output.
 BACKEND_API_URL=https://your-model-service.example.com
 
-# OpenAI-compatible chat provider for the result assistant.
-# Unset → the assistant returns "not configured".
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4.1-mini
-
 # Firebase email/password auth for the referral flow.
 # Unset → sign-in falls back to a browser-local sandbox account.
 NEXT_PUBLIC_FIREBASE_API_KEY=
@@ -158,17 +151,16 @@ src/
 │   ├── login/                Sign in
 │   ├── transparency/         Limits, data sources, licences
 │   ├── api/analyze/          Model proxy, or labelled demo output
-│   ├── api/chat/             Assistant proxy (key stays server-side)
 │   └── globals.css           The design system
 ├── components/
 │   ├── layout/               Header, Footer, Backdrop, ThemeToggle
 │   ├── landing/              Marketing sections
-│   ├── analyze/              Workbench, Scope, ResultPanel, Meter
-│   ├── chat/  auth/  referral/
-├── hooks/                    Recorder, analysis, result flow, auth, chat
+│   ├── analyze/              Workbench, Scope, ClinicalForm, ResultPanel
+│   ├── auth/  referral/
+├── hooks/                    Recorder, analysis, result flow, auth
 ├── lib/                      Audio DSP, API client, types, theme, WHO data
 ├── models/                   Domain types
-└── services/                 Auth, referral, assistant
+└── services/                 Auth, referral
 deploy/model-space/           FastAPI + PyTorch inference service
 ```
 
@@ -243,7 +235,7 @@ performance figures.
 No accuracy, sensitivity, or specificity figure is claimed. Dataset validation,
 calibration, and clinical evaluation must be completed and published before any
 score in this interface can be read as performance. The UI is written to hold
-that line, and so is the assistant's system prompt.
+that line throughout.
 
 ## Team
 

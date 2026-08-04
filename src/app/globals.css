@@ -1346,83 +1346,9 @@
   }
 }
 
-/* ── Chat ───────────────────────────────────────────────────── */
+/* ── Form controls ──────────────────────────────────────────── */
 
 @layer components {
-  .chat {
-    display: flex;
-    flex-direction: column;
-    min-height: 30rem;
-    max-height: 40rem;
-  }
-  .chat__log {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    overflow-y: auto;
-    padding-block: var(--space-md);
-  }
-  .bubble {
-    max-width: 85%;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-lg);
-    font-size: var(--text-sm);
-    line-height: 1.55;
-    white-space: pre-wrap;
-  }
-  .bubble--assistant {
-    align-self: flex-start;
-    border-bottom-left-radius: var(--radius-xs);
-    background: var(--surface-sunken);
-  }
-  .bubble--user {
-    align-self: flex-end;
-    border-bottom-right-radius: var(--radius-xs);
-    background: var(--accent);
-    color: var(--accent-ink);
-  }
-  .bubble--typing {
-    display: inline-flex;
-    gap: 0.25rem;
-    align-items: center;
-  }
-  .bubble--typing i {
-    width: 0.35rem;
-    height: 0.35rem;
-    border-radius: var(--radius-full);
-    background: var(--text-subtle);
-    animation: blink 1.2s var(--ease) infinite;
-  }
-  .bubble--typing i:nth-child(2) { animation-delay: 0.15s; }
-  .bubble--typing i:nth-child(3) { animation-delay: 0.3s; }
-  @keyframes blink {
-    0%, 100% { opacity: 0.25; }
-    50% { opacity: 1; }
-  }
-  .chat__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs);
-    padding-block: var(--space-sm);
-  }
-  .chip {
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-full);
-    background: transparent;
-    font-size: var(--text-xs);
-    color: var(--text-muted);
-    transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
-  }
-  .chip:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-  .chat__form {
-    display: flex;
-    gap: var(--space-xs);
-    padding-top: var(--space-sm);
-    border-top: 1px solid var(--border);
-  }
-
   .input {
     width: 100%;
     min-height: 2.75rem;
