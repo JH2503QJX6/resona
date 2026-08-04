@@ -212,6 +212,31 @@ Production integration would require registration at the
 [SatuSehat Developer Portal](https://satusehat.kemkes.go.id/), OAuth2 client
 credentials, and FHIR R4 endpoints for Practitioner, Organization, and Encounter.
 
+## Reproducibility
+
+Be aware of what this repository does and does not let you do.
+
+**Inference is fully self-contained.** The checkpoint and the derived
+normalisation statistics in `deployment_config.json` are committed, so
+`npm run model:dev` gives real predictions with nothing else to fetch.
+
+**Training is not reproducible from this repository.** No cough audio ships
+here — the five WAV files under `deploy/model-space` are one-second synthetic
+test signals for smoke-testing the service, not training data. The checkpoint
+came from an external training run against CODA-TB.
+
+To retrain or audit the model you need the source data:
+
+| Dataset | Access | Fits this pipeline |
+|---|---|---|
+| [CODA-TB](https://www.synapse.org/Synapse:syn31472953) — 733k coughs, 2,143 participants, microbiologically confirmed | Free, but requires a Synapse Certified + Validated account and a reviewed Intended Data Use Statement | **Yes** — its clinical variables are exactly the 27 features this model expects |
+| [TBscreen](https://zenodo.org/records/10431329) — 33k passive coughs, 149 TB / 46 controls | CC-BY 4.0, direct download, 395 GB | Partly — real TB labels, but a different metadata schema needs remapping |
+| [COUGHVID](https://zenodo.org/records/7024894) — 30k coughs | CC-BY 4.0, 2.3 GB | No TB labels; useful only for pretraining or augmentation |
+
+CODA-TB withholds its validation split and scores submissions through its own
+mechanism, so retraining locally does not by itself produce reportable
+performance figures.
+
 ## Validation status
 
 No accuracy, sensitivity, or specificity figure is claimed. Dataset validation,
