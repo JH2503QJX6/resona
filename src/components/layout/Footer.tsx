@@ -8,6 +8,12 @@ const PRODUCT = [
   { href: "/transparency", label: "Transparency" },
 ] as const;
 
+const TEAM = [
+  "Jonathan Allen Hung",
+  "David Lyon Sudirman",
+  "Utkarsh Sandilya",
+] as const;
+
 export function Footer() {
   return (
     <footer className="footer">
@@ -28,6 +34,15 @@ export function Footer() {
                 <li key={item.href}>
                   <Link href={item.href}>{item.label}</Link>
                 </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="footer__col">
+            <h3>Team</h3>
+            <ul>
+              {TEAM.map((name) => (
+                <li key={name}>{name}</li>
               ))}
             </ul>
           </div>

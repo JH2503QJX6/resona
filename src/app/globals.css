@@ -946,7 +946,7 @@
     gap: var(--space-xl);
   }
   @media (min-width: 48rem) {
-    .footer__grid { grid-template-columns: 1.5fr repeat(2, 1fr); }
+    .footer__grid { grid-template-columns: 1.4fr repeat(3, 1fr); }
   }
   .footer__blurb {
     max-width: 34ch;
