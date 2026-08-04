@@ -107,3 +107,6 @@ deploy/model-space/AGENT_HANDOFF_NEXTJS_HF.md
 
 # Private design references — layout studies only, never shipped by the app
 /assets/
+
+# Editor/agent tooling config
+/.claude/
