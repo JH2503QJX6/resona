@@ -187,14 +187,24 @@ uvicorn app:app --host 0.0.0.0 --port 7860
 
 ## Data and sources
 
-> [!NOTE]
-> The CODA-TB participant records are **not included in this repository**. They
-> are distributed through Synapse (`syn40358494`) under a data use agreement
-> that does not permit redistribution. To work with them locally, accept the
-> terms on Synapse and run `deploy/model-space/download_coda_solicited.py` with
-> your own auth token — it writes the two CSVs into `deploy/`.
+> [!IMPORTANT]
+> **CODA-TB is access-controlled, and its records are not in this repository.**
+>
+> The dataset holds real patient records — including HIV status and
+> microbiological TB results — from clinics in seven countries. Access is not
+> self-service. You need a Synapse account that is both Certified and
+> Validated, plus an **Intended Data Use Statement reviewed and approved** by
+> the CODA data access team. Approval is scoped to the use you describe.
+>
+> The terms bind you personally and prohibit redistribution. Do not commit the
+> files, attach them to a submission, or serve them from a deployed site. This
+> repository's `.gitignore` already excludes them.
+>
+> Once approved, run `deploy/model-space/download_coda_solicited.py` with your
+> own Synapse token. Start at
+> [syn31472953](https://www.synapse.org/Synapse:syn31472953).
 
-Landing-page statistics come from the **WHO Global Tuberculosis Report 2024**.
+Landing-page statistics come from the **WHO Global Tuberculosis Report 2025**.
 Incidence estimates and notified cases measure different things, so each figure
 carries its year and definition in the UI. Model training uses the public
 **CODA-TB** dataset.
