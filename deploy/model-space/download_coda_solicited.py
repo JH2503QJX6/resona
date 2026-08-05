@@ -1,3 +1,23 @@
+"""
+Download the CODA-TB solicited cough dataset from Synapse.
+
+ACCESS IS CONTROLLED. This script will not work, and should not be run, until
+you personally hold approved access. Getting it requires all of:
+
+  1. A Synapse account that is both Certified and Validated
+     (identity verification, not just a signup).
+  2. An Intended Data Use Statement, submitted and reviewed by the CODA data
+     access team. Approval is not automatic and is scoped to the use you
+     described.
+  3. Acceptance of the dataset Terms of Use.
+
+Start at https://www.synapse.org/Synapse:syn31472953
+
+These are records from real patients at clinics in seven
+countries, including HIV status and microbiological TB results. They consented
+to research use under specific conditions.
+"""
+
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
