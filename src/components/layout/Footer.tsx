@@ -53,7 +53,7 @@ export function Footer() {
               {TB_FIGURES.map((figure) => (
                 <li key={figure.sourceUrl}>
                   <a href={figure.sourceUrl} target="_blank" rel="noreferrer">
-                    {figure.sourceTitle.replace("WHO Global Tuberculosis Report 2024 — ", "WHO · ")}
+                    {figure.sourceTitle.replace("WHO Global Tuberculosis Report 2025 — ", "WHO · ")}
                   </a>
                 </li>
               ))}
