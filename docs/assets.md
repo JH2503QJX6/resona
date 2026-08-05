@@ -33,9 +33,13 @@ time and no request leaves the user's browser for a font.
 
 ## Data
 
-- Landing-page statistics: **WHO Global Tuberculosis Report 2024**, cited inline
+- Landing-page statistics: **WHO Global Tuberculosis Report 2025**, cited inline
   with year, definition, and a direct link per figure.
-- Model dataset: **CODA-TB** (public).
+- Model dataset: **CODA-TB** — openly documented but **access-controlled**, not
+  public. Obtaining it requires a Synapse Certified and Validated account and an
+  Intended Data Use Statement approved by the data access team. Its terms
+  prohibit redistribution, so no participant record is included here. See the
+  header of `deploy/model-space/download_coda_solicited.py`.
 - Referral directory: **fictional sandbox records** styled after SatuSehat. Not
   real facilities, not connected to the SatuSehat API.
 
