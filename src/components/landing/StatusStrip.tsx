@@ -1,7 +1,7 @@
 const FACTS = [
   { term: "Status", detail: "Open research prototype" },
   { term: "Scope", detail: "Pre-screening signal, not a diagnosis" },
-  { term: "Data", detail: "WHO 2024 · CODA-TB" },
+  { term: "Data", detail: "WHO 2025 · CODA-TB" },
   { term: "Model", detail: "Multimodal CNN · demo mode when offline" },
 ] as const;
 
